@@ -2,31 +2,101 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Formulir dengan Delete</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Formulir Responsif</title>
   <style>
-    body { font-family: sans-serif; padding: 2em; }
-    input, button { margin: 0.5em 0; padding: 0.5em; }
-    table { border-collapse: collapse; margin-top: 2em; }
-    td, th { border: 1px solid #ccc; padding: 0.5em 1em; }
+    body {
+      font-family: sans-serif;
+      padding: 1.5em;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    h2, h3 {
+      text-align: center;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+    }
+
+    input, button {
+      padding: 0.8em;
+      font-size: 1em;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.5em;
+      overflow-x: auto;
+      display: block;
+    }
+
+    thead {
+      background-color: #f0f0f0;
+    }
+
+    td, th {
+      border: 1px solid #ccc;
+      padding: 0.75em;
+      text-align: left;
+      font-size: 0.95em;
+    }
+
+    @media (max-width: 480px) {
+      td, th {
+        font-size: 0.85em;
+        padding: 0.6em;
+      }
+    }
+
+    #status {
+      text-align: center;
+      margin-top: 1em;
+      color: green;
+    }
   </style>
 </head>
 <body>
   <h2>Formulir Pendaftaran</h2>
+
   <form id="formulir">
-    <input type="text" name="nama" placeholder="Nama" required><br>
-    <input type="email" name="email" placeholder="Email" required><br>
-    <button type="submit">Tambah</button>
+    <input type="text" name="nama" placeholder="Nama Lengkap" required>
+    <input type="email" name="email" placeholder="Alamat Email" required>
+    <button type="submit">Tambah Data</button>
   </form>
 
   <p id="status"></p>
-  <h3>Data Tersimpan:</h3>
+
+  <h3>Data Tersimpan</h3>
   <table id="dataTable">
-    <thead><tr><th>Nama</th><th>Email</th><th>Aksi</th></tr></thead>
+    <thead>
+      <tr>
+        <th>Nama</th>
+        <th>Email</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
     <tbody></tbody>
   </table>
 
   <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyKMkuiRFiHVOoQnk4OJpIRVCqbYwWxziMqXI-RfSjt13PsHkdzFnj-uXkfoC1rUFUvkw/exec'; // Ganti dengan punyamu
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyKMkuiRFiHVOoQnk4OJpIRVCqbYwWxziMqXI-RfSjt13PsHkdzFnj-uXkfoC1rUFUvkw/exec'; // ganti dengan milikmu
     const form = document.getElementById('formulir');
     const tableBody = document.querySelector('#dataTable tbody');
     const status = document.getElementById('status');
@@ -39,25 +109,25 @@
 
       fetch(scriptURL, { method: 'POST', body: formData })
         .then(() => {
-          status.textContent = "Data berhasil ditambahkan!";
+          status.textContent = "✅ Data berhasil ditambahkan!";
           form.reset();
           loadData();
         })
-        .catch(() => status.textContent = "Gagal menambah data.");
+        .catch(() => status.textContent = "❌ Gagal menambah data.");
     });
 
     // Hapus data
     function deleteRow(rowNum) {
       const formData = new FormData();
       formData.append("action", "delete");
-      formData.append("row", rowNum); // baris spreadsheet (1-based)
+      formData.append("row", rowNum);
 
       fetch(scriptURL, { method: 'POST', body: formData })
         .then(() => {
-          status.textContent = "Data berhasil dihapus!";
+          status.textContent = "✅ Data berhasil dihapus!";
           loadData();
         })
-        .catch(() => status.textContent = "Gagal menghapus data.");
+        .catch(() => status.textContent = "❌ Gagal menghapus data.");
     }
 
     // Tampilkan data
@@ -78,9 +148,8 @@
         });
     }
 
-    // Pertama kali load
+    // Load awal
     loadData();
   </script>
 </body>
 </html>
-
