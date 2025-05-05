@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulir Sederhana</title>
+  <style>
+    body { font-family: sans-serif; padding: 2em; }
+    input, button { margin: 0.5em 0; padding: 0.5em; width: 100%; max-width: 300px; }
+  </style>
+</head>
+<body>
+  <h2>Formulir Pendaftaran</h2>
+  <form id="formulir">
+    <input type="text" name="nama" placeholder="Masukkan nama" required><br>
+    <input type="email" name="email" placeholder="Masukkan email" required><br>
+    <button type="submit">Kirim</button>
+  </form>
+  <p id="status"></p>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzXjh5PHF-TsLLnUzfFwJsv5StHUtHe9aDk6Gh-qFxvVaJJDuOLRnnOGLDmgAoBi4HDLw/exec'; // Ganti dengan URL kamu
+    const form = document.getElementById('formulir');
+    const status = document.getElementById('status');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const data = new FormData(form);
+
+      fetch(scriptURL, { method: 'POST', body: data })
+        .then(response => {
+          status.textContent = "Data berhasil dikirim!";
+          form.reset();
+        })
+        .catch(error => {
+          status.textContent = "Gagal mengirim data.";
+        });
+    });
+  </script>
+</body>
+</html>
